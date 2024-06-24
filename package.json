@@ -1,0 +1,35 @@
+{
+  "name": "fullstack_course_p3",
+  "version": "1.0.0",
+  "description": "exercises for course fullstack",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:ui": "rm -rf dist && git add . && git push && cd /Users/fabriziom/Documents/fullstack_course/part2/phonebook && npm run build && cp -r dist /Users/fabriziom/Documents/fullstack_course_p3",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "full_stack_p3"
+  },
+  "author": "Fabrizio Mirabella",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongodb": "^6.7.0",
+    "mongoose": "^8.4.1",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.5.0",
+    "@stylistic/eslint-plugin-js": "^2.1.0",
+    "eslint": "^9.5.0",
+    "globals": "^15.6.0",
+    "nodemon": "^3.1.3"
+  }
+}
