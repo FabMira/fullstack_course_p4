@@ -84,6 +84,14 @@ test('the first blog is about React patterns', async () => {
     assert(titles.includes('React patterns'))
 })
 
+test('the unique identifier is caller "id"', async () => {
+    const response = await api.get('/api/blogs')
+    response.body.forEach(blog => {
+        assert('id' in blog);
+    })
+    
+})
+
 after(async () => {
     await mongoose.connection.close()
 })
