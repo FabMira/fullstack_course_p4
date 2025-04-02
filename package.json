@@ -19,7 +19,12 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:ui": "rm -rf dist && git add . && git push && cd /Users/fabriziom/Documents/fullstack_course/part2/phonebook && npm run build && cp -r dist /Users/fabriziom/Documents/fullstack_course_p3",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
+    "lint": "eslint ."
   },
   "dependencies": {
     "cors": "^2.8.5",
