@@ -1,0 +1,32 @@
+{
+  "name": "fullstack_course_p4",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [
+    "fullstack",
+    "course"
+  ],
+  "homepage": "https://github.com/FabMira/fullstack_course_p4#readme",
+  "bugs": {
+    "url": "https://github.com/FabMira/fullstack_course_p4/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FabMira/fullstack_course_p4.git"
+  },
+  "license": "ISC",
+  "author": "Fabrizio Mirabella",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "mongodb": "^6.15.0",
+    "mongoose": "^8.13.1",
+    "morgan": "^1.10.0"
+  }
+}
