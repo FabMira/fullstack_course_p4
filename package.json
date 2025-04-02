@@ -19,9 +19,9 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "node --watch index.js",
-    "test": "node --test",
+    "start": "NODE_ENV=production node index.js",
+    "dev": "NODE_ENV=development node --watch index.js",
+    "test": "NODE_ENV=test node --test",
     "build:ui": "rm -rf dist && git add . && git push && cd /Users/fabriziom/Documents/fullstack_course/part2/phonebook && npm run build && cp -r dist /Users/fabriziom/Documents/fullstack_course_p3",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
     "lint": "eslint ."
@@ -34,5 +34,8 @@
     "mongodb": "^6.15.0",
     "mongoose": "^8.13.1",
     "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "supertest": "^7.1.0"
   }
 }
