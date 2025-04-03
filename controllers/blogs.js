@@ -7,23 +7,26 @@ blogsRouter.get('/', async (request, response) => {
 })
 
 blogsRouter.post('/', async (request, response) => {
-    const body = request.body
-
-    const blog = new Blog({
-        title: body.title || 'no-title',
-        author: body.author || 'no-author',
-        url: body.url || 'no-url',
-        likes: body.likes || 0,
-    })
-
-    try {
-        const savedBlog = await blog.save()
-    response.status(201).json(savedBlog)
-    } catch(exception) {
-        next(exception)
-    }
+    const blog = new Blog(request.body)
+    const result = await blog.save()
+    response.status(201).json(result)
 })
 
 
 module.exports = blogsRouter
 
+// const body = request.body
+
+//     const blog = new Blog({
+//         title: body.title || 'no-title',
+//         author: body.author,
+//         url: body.url || 'no-url',
+//         likes: body.likes || 0,
+//     })
+
+//     try {
+//         const savedBlog = await blog.save()
+//     response.status(201).json(savedBlog)
+//     } catch(exception) {
+//         next(exception)
+//     }

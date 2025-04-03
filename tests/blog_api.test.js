@@ -1,11 +1,13 @@
-const { test, after, beforeEach } = require('node:test')
+const { test, describe, after, beforeEach } = require('node:test')
 const assert = require('node:assert')
 const Blog = require('../models/blogs')
 const mongoose = require('mongoose')
 const helper = require('./test_helper')
 const supertest = require('supertest')
 const app = require('../app')
+const _ = require('lodash')
 const { title } = require('node:process')
+const { application } = require('express')
 
 const api = supertest(app)
 
@@ -100,6 +102,30 @@ test('if no likes in request, it takes 0 by default', async () => {
     assert('likes' in lastBlogAdded)
     assert.strictEqual(0, lastBlogAdded.likes)
     
+})
+
+describe('exercise 4.12 - missing required properties', () => {
+    const newBlog = {
+        title: "Canonical string reduction",
+        author: "Edsger W. Dijkstra",
+        url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+        likes: 12,
+    }
+
+    test('if title is missing blog is not added', async () => {
+        await api
+            .post('/api/blogs')
+            .send(_.omit(newBlog, ['title']))
+            .expect(400)
+        
+    })
+
+    test('if url is missing blog is not added', async () => {
+        await api
+            .post('/api/blogs')
+            .send(_.omit(newBlog, ['url']))
+            .expect(400)
+    })
 })
 
 after(async () => {
