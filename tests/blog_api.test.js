@@ -150,6 +150,28 @@ describe('deleting a blog', () => {
     })
 })
 
+describe('updating a blog by id', () => {
+    test('updating likes of a blog', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+
+        const blogToUpdate = {
+            title: blogsAtStart[0].title,
+            author: blogsAtStart[0].author,
+            url: blogsAtStart[0].url,
+            likes: blogsAtStart[0].likes + 10
+        }
+
+        await api  
+            .put(`/api/blogs/${blogsAtStart[0].id}`)
+            .send(blogToUpdate)
+            .expect(200)
+
+        const blogAtEnd = await helper.blogsInDb()
+        const blogUpdated = blogAtEnd[0]
+        assert.notStrictEqual(blogUpdated.likes, blogsAtStart[0].likes)
+    })
+})
+
 after(async () => {
     await mongoose.connection.close()
 })
