@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const helper = require('./test_helper')
 const supertest = require('supertest')
 const app = require('../app')
+const { title } = require('node:process')
 
 const api = supertest(app)
 
@@ -65,20 +66,40 @@ test('a valid blog can be added', async () => {
     assert(titles.includes('Canonical string reduction'))
 })
 
-test('blog without author is not added', async () => {
-    const newBlog = {
-        title: "Canonical string reduction",
-        url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
-        likes: 12,
-    }
+// test('blog without author is not added', async () => {
+//     const newBlog = {
+//         title: "Canonical string reduction",
+//         url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+//         likes: 12,
+//     }
     
+//     await api
+//         .post('/api/blogs')
+//         .send(newBlog)
+//         .expect(400)
+
+//     const blogsAtEnd = await helper.blogsInDb()
+//     assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
+// })
+
+test('if no likes in request, it takes 0 by default', async () => {
+    const newBlog = {
+        title: "First class tests",
+        author: "Robert C. Martin",
+        url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll"
+    }
+
     await api
         .post('/api/blogs')
         .send(newBlog)
-        .expect(400)
+        .expect(201)
 
-    const blogsAtEnd = await helper.blogsInDb()
-    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
+    const blogsAtEnd = await helper.blogsInDb();
+    const lastBlogAdded = blogsAtEnd[blogsAtEnd.length-1]
+
+    assert('likes' in lastBlogAdded)
+    assert.strictEqual(0, lastBlogAdded.likes)
+    
 })
 
 after(async () => {

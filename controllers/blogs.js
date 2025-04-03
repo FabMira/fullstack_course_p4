@@ -6,12 +6,12 @@ blogsRouter.get('/', async (request, response) => {
     response.json(blogs)   
 })
 
-blogsRouter.post('/', async (request, response, next) => {
+blogsRouter.post('/', async (request, response) => {
     const body = request.body
 
     const blog = new Blog({
         title: body.title || 'no-title',
-        author: body.author,
+        author: body.author || 'no-author',
         url: body.url || 'no-url',
         likes: body.likes || 0,
     })
@@ -26,3 +26,4 @@ blogsRouter.post('/', async (request, response, next) => {
 
 
 module.exports = blogsRouter
+
