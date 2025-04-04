@@ -172,6 +172,3 @@ describe('updating a blog by id', () => {
     })
 })
 
-after(async () => {
-    await mongoose.connection.close()
-})
