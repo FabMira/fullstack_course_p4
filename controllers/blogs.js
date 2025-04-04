@@ -1,9 +1,10 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blogs')
+const User = require('../models/users')
 
 blogsRouter.get('/', async (request, response, next) => {
     try {
-        const blogs = await Blog.find({})
+        const blogs = await Blog.find({}).populate('user', { username: 1, name: 1, userId: 1 })
         response.json(blogs)   
     } catch(exception) {
         next(exception)
@@ -11,10 +12,17 @@ blogsRouter.get('/', async (request, response, next) => {
 })
 
 blogsRouter.post('/', async (request, response, next) => {
+    const user = await User.findById(request.body.userId)
+    
     const blog = new Blog(request.body)
+    blog.user = user.id
+
     try {
-        const result = await blog.save()
-        response.status(201).json(result)
+        const savedBlog = await blog.save()
+        user.blogs = user.blogs.concat(savedBlog._id)
+        await user.save()
+        
+        response.status(201).json(savedBlog)
     } catch(exception) {
         next(exception)
     }
