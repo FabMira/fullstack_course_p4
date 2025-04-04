@@ -41,26 +41,71 @@ describe('when there is initially one user in db', () => {
         assert(usernames.includes(newUser.username))
     })
 
-})
-test('creation fails with proper statuscode and message if username already taken', async () => {
-    const userAtStart = await helper.usersInDb()
-
-    const newUser = {
-        username: 'root',
-        name: 'superuser',
-        password: 'Abc123'
-    }
-
-    const result = await api
-        .post('/api/users')
-        .send(newUser)
-        .expect(400)
-        .expect('Content-Type', /application\/json/)
+    test('creation fails with proper statuscode and message if username already taken', async () => {
+        const userAtStart = await helper.usersInDb()
     
-    const usersAtEnd = await helper.usersInDb()
-    assert(result.body.error.includes('expected `username` to be unique'))
+        const newUser = {
+            username: 'root',
+            name: 'superuser',
+            password: 'Abc123'
+        }
+    
+        const result = await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+        
+        const usersAtEnd = await helper.usersInDb()
+        assert(result.body.error.includes('expected `username` to be unique'))
+    
+        assert.strictEqual(usersAtEnd.length, userAtStart.length)
+    })
 
-    assert.strictEqual(usersAtEnd.length, userAtStart.length)
+})
+
+describe('when trying to create invalid users', () => {
+
+    test('creation fails when invalid username is provided', async () => {
+        const userAtStart = await helper.usersInDb() 
+    
+        const newUser = {
+            username: 'ro',
+            name: 'Ronan',
+            password: 'ABC123'
+        }
+
+        const result = await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+        
+        const usersAtEnd = await helper.usersInDb()
+        assert(result.body.error.includes("User validation failed: username: Path `username` (`ro`) is shorter than the minimum allowed length (3)."))
+        assert.strictEqual(usersAtEnd.length, userAtStart.length)
+    })
+    
+    test('creation fails when invalid password is provided', async () => {
+        const userAtStart = await helper.usersInDb() 
+    
+        const newUser = {
+            username: 'ron123',
+            name: 'Ronan',
+            password: 'AB'
+        }
+
+        const result = await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+        
+        const usersAtEnd = await helper.usersInDb()
+        assert(result.body.error.includes("password is shorter thant the minimum allowed length (3)"))
+        assert.strictEqual(usersAtEnd.length, userAtStart.length)
+    })
+
 })
 
 
